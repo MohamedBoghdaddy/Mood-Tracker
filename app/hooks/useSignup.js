@@ -1,3 +1,5 @@
+"use client"; // This ensures the file is treated as a client component
+
 import { useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
