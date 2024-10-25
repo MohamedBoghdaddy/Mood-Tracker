@@ -1,6 +1,8 @@
+"use client"; // Ensures the file is treated as a client component
+
 import { Link } from "react-router-dom";
 import "../../styles/signup.css"; // Shared CSS
-import { useSignup } from "../../../../hooks/useSignup";
+import { useSignup } from "../../app/hooks/useSignup";
 
 const Signup = () => {
   const {
@@ -30,6 +32,7 @@ const Signup = () => {
         <div className="left-sign">
           <h2>Signup</h2>
           <form onSubmit={handleSignup}>
+            {/* Username Input */}
             <div className="field">
               <div className="field-wrapper">
                 <label htmlFor="username">Username:</label>
@@ -39,9 +42,12 @@ const Signup = () => {
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   maxLength={20}
+                  required
                 />
               </div>
             </div>
+
+            {/* Email Input */}
             <div className="field">
               <div className="field-wrapper">
                 <label htmlFor="email">Email:</label>
@@ -51,9 +57,12 @@ const Signup = () => {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                   maxLength={70}
+                  required
                 />
               </div>
             </div>
+
+            {/* Password Input */}
             <div className="field password-container">
               <div className="field-wrapper">
                 <label htmlFor="password">Password:</label>
@@ -62,6 +71,7 @@ const Signup = () => {
                   id="password"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -74,6 +84,8 @@ const Signup = () => {
                 </button>
               </div>
             </div>
+
+            {/* Confirm Password Input */}
             <div className="field password-container">
               <div className="field-wrapper">
                 <label htmlFor="confirmPassword">Confirm Password:</label>
@@ -82,6 +94,7 @@ const Signup = () => {
                   id="confirmPassword"
                   value={confirmPassword}
                   onChange={(e) => setConfirmPassword(e.target.value)}
+                  required
                 />
                 <button
                   type="button"
@@ -96,6 +109,8 @@ const Signup = () => {
                 </button>
               </div>
             </div>
+
+            {/* Gender Input */}
             <div className="field">
               <label htmlFor="gender">Gender:</label>
               <div className="gender-container">
@@ -107,6 +122,7 @@ const Signup = () => {
                     value="male"
                     checked={gender === "male"}
                     onChange={(e) => setGender(e.target.value)}
+                    required
                   />
                   Male
                 </label>
@@ -118,18 +134,25 @@ const Signup = () => {
                     value="female"
                     checked={gender === "female"}
                     onChange={(e) => setGender(e.target.value)}
+                    required
                   />
                   Female
                 </label>
               </div>
             </div>
+
+            {/* Error and Success Messages */}
             {errorMessage && <div className="error">{errorMessage}</div>}
             {successMessage && <div className="success">{successMessage}</div>}
+
+            {/* Submit Button */}
             <button className="left_btn" type="submit" disabled={isLoading}>
               {isLoading ? "Signing up..." : "Signup"}
             </button>
           </form>
         </div>
+
+        {/* Right Signup Section */}
         <div className="right-sign">
           <h1>Already have an account?</h1>
           <Link to="/login">
