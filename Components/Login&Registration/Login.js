@@ -1,5 +1,7 @@
+"use client"; // This ensures the file is treated as a client component
+
 import { Link } from "react-router-dom";
-import { useLogin } from "../../hooks/useLogin";
+import { useLogin } from "../../app/hooks/useLogin";
 
 const Login = () => {
   const {
