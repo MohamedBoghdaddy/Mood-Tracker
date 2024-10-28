@@ -1,61 +1,62 @@
-import { useState, useContext, useEffect } from "react";
-import { Link, useNavigate } from "react-router-dom";
+"use client"; // Ensures the file is treated as a client component
+
+import Link from "next/link";
+import { useState, useContext } from "react";
+import { useRouter } from "next/navigation"; // Updated import for useRouter in Next.js 13+
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faUser, faSignOutAlt } from "@fortawesome/free-solid-svg-icons";
+import Image from "next/image";
 import logo from "../assets/images/logo.png"; // Adjust path as per your project
-import Login from "../Login&Register/Login.jsx"; // Adjust path to Login component
+import Login from "../Login&Register/Login"; // Adjust path to Login component
 import { useAuthContext } from "../../../context/AuthContext";
-import { useLogout } from "../../../hooks/useLogout.js";
-import axios from "axios";
+import { useLogout } from "../../../hooks/useLogout";
 import { DashboardContext } from "../../../context/DashboardContext"; // Import the DashboardContext
 
 const NavBar = () => {
   const [showLoginModal, setShowLoginModal] = useState(false);
-  const [searchTerm, setSearchTerm] = useState(""); // New state to capture search term
-  const { searchPublicWorkspaces } = useContext(DashboardContext); // Fetch search function from context
-  const navigate = useNavigate();
+  const [searchTerm, setSearchTerm] = useState("");
+  const { searchPublicWorkspaces } = useContext(DashboardContext);
+  const router = useRouter();
   const { state } = useAuthContext();
-
   const { user, isAuthenticated } = state;
   const { logout } = useLogout();
 
-  const handleLoginModalOpen = () => {
-    setShowLoginModal(true);
-  };
+  const handleLoginModalOpen = () => setShowLoginModal(true);
 
-  const handleLoginModalClose = () => {
-    setShowLoginModal(false);
-  };
+  const handleLoginModalClose = () => setShowLoginModal(false);
 
   const handleLogout = async () => {
     logout();
-    navigate("/");
+    router.push("/");
   };
 
   const handleSearchSubmit = (e) => {
-    e.preventDefault(); // Prevent page reload
+    e.preventDefault();
     if (searchTerm) {
-      navigate(`/workspaces?term=${searchTerm}`);
+      router.push(`/workspaces?term=${searchTerm}`);
     }
   };
 
   return (
     <nav className="flex items-center justify-between fixed top-0 w-full h-16 bg-gray-800 text-white z-50 px-6">
       <div className="flex items-center">
-        <Link to="/">
-          <img src={logo} alt="Company Logo" className="w-20 h-auto" />
+        <Link href="/">
+          <Image src={logo} alt="Company Logo" width={80} height={50} />
         </Link>
       </div>
       <div className="hidden md:flex items-center space-x-6">
-        <Link to="/" className="text-gray-400 hover:text-white text-lg">
+        <Link href="/" className="text-gray-400 hover:text-white text-lg">
           HOME
         </Link>
-        <Link to="/contact" className="text-gray-400 hover:text-white text-lg">
+        <Link
+          href="/contact"
+          className="text-gray-400 hover:text-white text-lg"
+        >
           Contact Us
         </Link>
         {isAuthenticated && (
           <Link
-            to="/dashboard"
+            href="/dashboard"
             className="text-gray-400 hover:text-white text-lg"
           >
             Dashboard
@@ -64,7 +65,6 @@ const NavBar = () => {
       </div>
 
       <div className="flex items-center space-x-4">
-        {/* Conditional rendering based on authentication */}
         {isAuthenticated ? (
           <button
             onClick={handleLogout}
@@ -100,17 +100,19 @@ const NavBar = () => {
         </form>
       </div>
 
-      {/* Modal for Login */}
-      <div className={`modal ${showLoginModal ? "block" : "hidden"}`}>
-        <div className="modal-background"></div>
-        <div className="modal-content">
-          <Login onLoginSuccess={handleLoginModalClose} />
+      {showLoginModal && (
+        <div className="fixed inset-0 flex items-center justify-center z-50 bg-black bg-opacity-50">
+          <div className="bg-white p-8 rounded-lg shadow-lg relative">
+            <button
+              onClick={handleLoginModalClose}
+              className="absolute top-2 right-2 text-gray-500 hover:text-gray-700"
+            >
+              ×
+            </button>
+            <Login onLoginSuccess={handleLoginModalClose} />
+          </div>
         </div>
-        <button
-          className="modal-close"
-          onClick={handleLoginModalClose}
-        ></button>
-      </div>
+      )}
     </nav>
   );
 };
