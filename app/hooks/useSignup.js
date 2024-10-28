@@ -4,7 +4,8 @@ import { useState } from "react";
 import axios from "axios";
 import { useAuthContext } from "../context/AuthContext";
 
-const apiUrl = import.meta.env.VITE_API_URL || "http://localhost:4000";
+// Define apiUrl directly, removing the need for import.meta.env
+const apiUrl = "http://localhost:4000";
 
 export const useSignup = () => {
   const [username, setUsername] = useState("");
