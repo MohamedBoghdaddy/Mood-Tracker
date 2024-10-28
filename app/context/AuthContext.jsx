@@ -1,3 +1,5 @@
+"use client"; // This directive tells Next.js to treat this component as a Client Component
+
 import {
   createContext,
   useReducer,
